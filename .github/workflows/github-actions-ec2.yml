@@ -1,0 +1,35 @@
+name: Deploy to EC2 on push to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into EC2 and update Docker container
+        if: success()
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            IMAGE_NAME="ayushreact098/aws_web:latest"
+            CONTAINER_IDS=$(docker ps -q --filter "ancestor=$IMAGE_NAME")
+            if [ ! -z "$CONTAINER_IDS" ]; then
+              docker stop $CONTAINER_IDS
+              docker rm $CONTAINER_IDS
+            fi
+            IMAGE_ID=$(docker images -q $IMAGE_NAME)
+            if [ ! -z "$IMAGE_ID" ]; then
+              docker rmi $IMAGE_ID
+            fi
+            docker pull $IMAGE_NAME
+            docker run -d -p 3000:3000 --name aws_web $IMAGE_NAME
