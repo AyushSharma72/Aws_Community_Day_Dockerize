@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  font-family: sans-serif;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+/* utitliy */
+
+.purplegradient {
+  background: linear-gradient(220.55deg, #a531dc 0%, #4300b1 100%);
+}
+
+/* navabar */
+.active {
+  color: #ffebb2;
+}
+
+.navbar a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #ffebb2;
+  transition: width 0.5s;
+}
+
+.navbar a:hover::after {
+  width: 100%;
+}
+.navbar a:hover {
+  color: #ffebb2;
+  transition: color 0.5s;
+}
+.navbar a {
+  list-style-type: none;
+  cursor: pointer;
+}
+.navbar {
+  background-color: #401f71 !important  ;
+}
+
+/* herosection */
+
+.textshadow {
+  text-shadow: 5px 5px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* animation div */
+
+#AnimationDiv {
+  width: 200px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+/* register button */
+.button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 10px;
+  border: 2px solid white;
+  overflow: hidden;
+  background: #401f71;
+  color: #fff;
+}
+
+.button-text {
+  transform: translateX(15px);
+  font-size: 1em;
+  font-weight: 700;
+  transition-duration: 0.3s;
+}
+
+.iconer {
+  transform: translateX(35px);
+  transition-duration: 0.3s;
+}
+
+.button:hover .button-text {
+  transform: translateX(0px);
+}
+
+.button:hover .iconer {
+  transform: translateY(0px);
+}
+
+.cardshadow {
+  transition: box-shadow 0.2s, transform 0.3s;
+}
+.cardshadow:hover {
+  transform: scale(1.03);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.Blackheadingshadow {
+  text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.5);
+}
+.FaqQuestions {
+  font-weight: 700 !important;
+}
+.sponserCardShadow {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.captianImg {
+  aspect-ratio: 1;
+}
+
+@media (max-width: 320px) {
+  .teamcardwidth {
+    width: 280px !important;
+  }
+  .locationtext {
+    font-size: 20px !important;
+  }
+}
