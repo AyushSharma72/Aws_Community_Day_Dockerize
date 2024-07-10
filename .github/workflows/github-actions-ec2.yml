@@ -1,9 +1,9 @@
-name: Deploy to EC2
+name: Deploy to EC2 on push to main
 
 on:
   push:
     branches:
-      - main  # Change this to your main branch name if different
+      - main
 
 jobs:
   deploy:
@@ -13,27 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build Docker image
-        run: docker build -t aws_web .
-
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Push Docker image to Docker Hub
-        run: |
-          docker tag aws_web ${{ secrets.DOCKER_USERNAME }}/aws_web:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/aws_web:latest
-
-      - name: SSH into EC2 and deploy
+      - name: SSH into EC2 and update Docker container
+        if: success()
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
+            docker stop aws_web || true
+            docker rm aws_web || true
+            docker image rm ${{ secrets.DOCKER_USERNAME }}/aws_web:latest || true
             docker pull ${{ secrets.DOCKER_USERNAME }}/aws_web:latest
-            if docker ps -a | grep -q aws_web; then
-              docker stop aws_web
-              docker rm aws_web
-            fi
-            docker run -d -p 5173:5173 --name aws_web ${{ secrets.DOCKER_USERNAME }}/aws_web:latest
+            docker run -d -p 3000:3000 --name aws_web ${{ secrets.DOCKER_USERNAME }}/aws_web:latest
