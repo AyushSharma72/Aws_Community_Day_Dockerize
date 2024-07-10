@@ -42,14 +42,14 @@ const Footer = () => {
           >
             Ayush
           </a>{" "}
-          &{" "}
+          {/* &{" "}
           <a
             href="https://www.linkedin.com/in/diksha-gupta3094/"
             target="blank"
             className="text-blue-500"
           >
             Diksha
-          </a>{" "}
+          </a>{" "} */}
         </p>
       </div>
     </div>
